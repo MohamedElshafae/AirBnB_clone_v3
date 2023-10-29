@@ -5,7 +5,6 @@ from flask import jsonify, abort, request, make_response
 from models import storage
 from models.state import State
 from api.v1.views import app_views
-from models.city import City
 from models.amenity import Amenity
 
 
@@ -44,7 +43,7 @@ def delete_amenity(amenity_id):
         abort(404)
     Amenity.delete()
     storage.save()
-    return jsonify({}), 200
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
@@ -56,7 +55,7 @@ def create_amenity():
         abort(400, 'Missing name')
     amenity = Amenity(**request.get_json())
     amenity.save()
-    return jsonify(amenity.to_dict()), 201
+    return make_response(jsonify(amenity.to_dict()), 201)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
@@ -72,7 +71,7 @@ def update_amenity(amenity_id):
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
     amenity.save()
-    return jsonify(amenity.to_dict()), 200
+    return make_response(jsonify(amenity.to_dict()), 200)
 
 
 if __name__ == '__main__':
