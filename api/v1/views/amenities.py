@@ -17,41 +17,41 @@ def get_amenities():
         JSON response: A JSON response containing
         a list of all Amenity objects.
     """
-    amenities = []
-    for amenity in storage.all(Amenity).values():
-        amenities.append(amenity.to_dict())
-
-    return jsonify(amenities)
+    amenities = storage.all(Amenity)
+    list_amenities = []
+    for amenity in amenities.values():
+        list_amenities.append(amenity.to_dict())
+    return jsonify(list_amenities)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
     """Retrieve a Amenity object."""
-    Amenity = storage.get(Amenity, amenity_id)
-    if Amenity is None:
+    Amenit = storage.get(Amenity, amenity_id)
+    if Amenit is None:
         abort(404)
-    return jsonify(Amenity.to_dict())
+    return jsonify(Amenit.to_dict())
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_amenity(amenity_id):
     """Delete a Amenity object."""
-    Amenity = storage.get(Amenity, amenity_id)
-    if Amenity is None:
+    Amenit = storage.get(Amenity, amenity_id)
+    if Amenit is None:
         abort(404)
-    Amenity.delete()
+    Amenit.delete()
     storage.save()
-    return make_response(jsonify({}), 200)
+    return jsonify({})
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def create_amenity():
     """Create a Amenity object."""
-    if not request.get_json():
+    if not request.json:
         abort(400, 'Not a JSON')
-    if 'name' not in request.get_json():
+    if 'name' not in request.json:
         abort(400, 'Missing name')
     amenity = Amenity(**request.get_json())
     amenity.save()
@@ -65,13 +65,13 @@ def update_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
-    if not request.get_json():
+    if not request.json:
         abort(400, 'Not a JSON')
     for key, value in request.get_json().items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
     amenity.save()
-    return make_response(jsonify(amenity.to_dict()), 200)
+    return jsonify(amenity.to_dict())
 
 
 if __name__ == '__main__':
