@@ -16,7 +16,7 @@ from models.user import User
 def get_reviews(place_id):
     """Get all reviews from Places object."""
     place = storage.get(Place, place_id)
-    if place is not None:
+    if place is None:
         abort(404)
     reviews = []
     for review in place.reviews:
