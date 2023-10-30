@@ -35,5 +35,3 @@ class User(BaseModel, Base):
                 hashed_password = md5_hash.hexdigest()
                 kwargs['password'] = hashed_password
         super().__init__(*args, **kwargs)
-
-
