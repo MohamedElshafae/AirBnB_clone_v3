@@ -61,7 +61,8 @@ def create_place_amenity(place_id, amenity_id):
         p_amenities = place.amenities
     else:
         p_amenities = place.amenity_ids
-    if amenity not in p_amenities:
-        p_amenity.append(amenity)
-        place.save()
+    if amenity in p_amenities:
+        return jsonify(amenity.to_dict())
+    p_amenity.append(amenity)
+    place.save()
     return make_response(jsonify(amenity.to_dict()), 201)
