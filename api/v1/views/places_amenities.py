@@ -9,7 +9,6 @@ from flask import jsonify, abort, request, make_response
 from models import storage
 from models.place import Place
 from models.amenity import Amenity
-from models.user import User
 
 storage_type = getenv('HBNB_TYPE_STORAGE')
 
@@ -47,7 +46,7 @@ def delete_amenity(place_id, amenity_id):
         abort(404)
     p_amenity.remove(amenity)
     place.save()
-    return jsonify({}), 201
+    return jsonify({}), 200
 
 
 @app_views.route('/places/<place_id>/amenities/<amenity_id>',
