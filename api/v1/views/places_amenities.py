@@ -42,7 +42,7 @@ def delete_amenity(place_id, amenity_id):
         p_amenities = place.amenities
     else:
         p_amenities = place.amenity_ids
-    if amenity not in amenities:
+    if amenity not in p_amenities:
         abort(404)
     p_amenity.remove(amenity)
     place.save()
@@ -61,7 +61,7 @@ def create_amenity(place_id, amenity_id):
         p_amenities = place.amenities
     else:
         p_amenities = place.amenity_ids
-    if amenity not in amenities:
+    if amenity not in p_amenities:
         abort(404)
     p_amenity.append(amenity)
     place.save()
